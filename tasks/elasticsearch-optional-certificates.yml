@@ -1,0 +1,19 @@
+- name: Fetch TLS cert from credstash
+  copy:
+    dest: /etc/ssl/private/wildcard.medal.com.crt
+    dest: es_ssl_cert_path
+    content: "{{ lookup('credstash', 'wildcard_medal_com_tls_cert', region='us-west-2', table=config.tags.env + '-medalops-credstash') }}"
+    content: es_ssl_cert_content
+    mode: 0644
+    owner: 'root'
+    group: 'elasticsearch'
+
+- name: Fetch TLS key from credstash
+  copy:
+    dest: /etc/ssl/private/wildcard.medal.com.key
+    dest: es_ssl_key_path
+    content: "{{ lookup('credstash', 'wildcard_medal_com_tls_key', region='us-west-2', table=config.tags.env + '-medalops-credstash') }}"
+    content: es_ssl_key_content
+    mode: 0640
+    owner: 'root'
+    group: 'elasticsearch'
