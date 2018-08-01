@@ -55,6 +55,8 @@
 - name: include SSL
   include: elasticsearch-optional-certificates.yml
   when: es_ssl_cert_path is defined
+  tags:
+      - config
 
 - name: flush handlers
   meta: flush_handlers
