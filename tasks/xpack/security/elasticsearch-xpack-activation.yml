@@ -15,6 +15,7 @@
     license_activated.json.license_status is not defined or
     license_activated.json.license_status != 'valid'
 
+    # TODO: use certs if configured to validate
 - name: Activate ES license (with security authentication)
   uri:
     method: PUT
@@ -25,6 +26,7 @@
     force_basic_auth: yes
     body: "{{ es_xpack_license }}"
     return_content: yes
+    validate_certs: no
   register: license_activated
   no_log: True
   when: "'security' in es_xpack_features"
