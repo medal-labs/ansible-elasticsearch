@@ -38,6 +38,21 @@
   apt: name={{ java }} state={{java_state}}
   when: ansible_os_family == 'Debian'
 
+- name: Get the installed java path
+  shell: "update-alternatives --display java | grep '^/' | awk '{print $1}' | grep java-8-openjdk"
+  become: yes
+  register: java_full_path
+  failed_when: False
+  changed_when: False
+  when: ansible_os_family == 'Debian'
+
+- name: correct java version selected
+  alternatives:
+    name: java
+    path: "{{ java_full_path.stdout }}"
+    link: /usr/bin/java
+  when: ansible_os_family == 'Debian' and java_full_path is defined
+
 - name: register open_jdk version
   shell: java -version 2>&1 | grep OpenJDK
   register: open_jdk
